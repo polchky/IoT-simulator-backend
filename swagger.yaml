@@ -1,0 +1,179 @@
+openapi: 3.0.0
+info:
+  description: This is a simulator for secure IoT middleware.
+  version: 1.0.0
+  title: IoT Secure Middleware Simulator
+  contact:
+    email: pascal.gremaud@unifr.ch
+servers:
+  - description: Live server instance 
+    url: https://iot-simulator.decensor.yt
+  - description: Localhost server
+    url: http://localhost:3000
+tags:
+  - name: action-messages
+  - name: action-templates
+  - name: action-types
+  - name: clients
+  - name: events
+  - name: event-types
+  - name: rules
+paths:
+  /action-messages/:
+    get: 
+      tags:
+        - action-messages
+      responses:
+        '200': 
+          description: success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ActionMessage'
+    post:
+      tags: 
+        - action-messages
+      responses: 
+        '201': 
+          description: created
+  /clients/:
+    get:
+      tags: 
+        - clients
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Client'
+    post: 
+      tags: 
+        - clients
+      responses:
+        '201':
+          description: created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Client'
+        '400':
+          description: invalid input
+      requestBody:
+        $ref: '#/components/requestBodies/Client'
+    delete:
+      tags: 
+        - clients
+      responses: 
+        '204':
+          description: no content
+  /clients/{clientId}:
+    get:
+      tags: 
+        - clients
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Client'
+        '400':
+          description: invalid parameter
+        '404': 
+          description: not found
+      parameters:
+        - name: clientId
+          in: path
+          description: ID of client to return
+          required: true
+          schema:
+            type: integer
+    put:
+      tags: 
+        - clients
+      parameters:
+        - name: clientId
+          in: path
+          description: ID of client to update
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        $ref: '#/components/requestBodies/Client'
+      responses:
+        '200': 
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Client'
+        '400':
+          description: Invalid input
+        '404':
+          description: Not found
+    delete:
+      tags: 
+        - clients
+      parameters:
+        - name: clientId
+          in: path
+          description: ID of client to delete
+          required: true
+          schema:
+            type: integer
+      responses: 
+        '204':
+          description: no content
+        '400':
+          description: invalid parameter
+        '404': 
+          description: not found
+components:
+  schemas:
+    ActionMessage: 
+      type: object
+      properties:
+        id:
+          type: integer
+        message: 
+          type: string
+        timestamp: 
+          type: string
+        eventId: 
+          type: integer
+        ruleId: 
+          type: integer
+        actionTemplateId:
+          type: integer
+    Client: 
+      type: object
+      properties:
+        id: 
+          type: integer
+        name: 
+          type: string
+        isAdmin: 
+          type: boolean
+        isActive:
+          type: boolean
+
+  requestBodies:
+    Client:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name: 
+                type: string
+              isAdmin:
+                type: boolean
+              isActive:
+                type: boolean
+      description: Client to be added
+      required: true
