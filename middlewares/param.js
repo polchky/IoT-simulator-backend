@@ -1,6 +1,6 @@
 const param = (model) => async (id, ctx, next) => {
     let obj;
-    const name = model.modelName.toLowerCase();
+    const name = model.modelName.charAt(0).toLowerCase() + model.modelName.slice(1);
     try {
         obj = await model.findById(id);
     } catch (err) {
