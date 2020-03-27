@@ -22,6 +22,7 @@
     "koa-bodyparser": "^4.3.0",
     "koa-combine-routers": "^4.0.2",
     "koa-router": "^8.0.8",
+    "module-alias": "^2.2.2",
     "mongoose": "^5.9.6"
   },
   "devDependencies": {
