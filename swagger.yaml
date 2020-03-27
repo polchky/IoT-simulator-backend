@@ -11,12 +11,12 @@ servers:
   - description: Localhost server
     url: http://localhost:3000
 tags:
-  - name: action-messages
-  - name: action-templates
-  - name: action-types
+  - name: action messages
+  - name: action templates
+  - name: action types
   - name: clients
   - name: events
-  - name: event-types
+  - name: event types
   - name: rules
 paths:
   /action-messages/:
@@ -133,6 +133,101 @@ paths:
           description: invalid parameter
         '404': 
           description: not found
+  /eventtypes/:
+    get:
+      tags: 
+        - event types
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: ''#/components/schemas/EventType''
+    post: 
+      tags: 
+        - event types
+      responses:
+        '201':
+          description: created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventType'
+        '400':
+          description: invalid input
+      requestBody:
+        $ref: '#/components/requestBodies/EventType'
+    delete:
+      tags: 
+        - event types
+      responses: 
+        '204':
+          description: no content
+  /eventtypes/{eventTypeId}:
+    get:
+      tags: 
+        - event types
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventType'
+        '400':
+          description: invalid parameter
+        '404': 
+          description: not found
+      parameters:
+        - name: eventTypeId
+          in: path
+          description: ID of event type to return
+          required: true
+          schema:
+            type: integer
+    put:
+      tags: 
+        - event types
+      parameters:
+        - name: eventTypeId
+          in: path
+          description: ID of event type to update
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        $ref: '#/components/requestBodies/EventType'
+      responses:
+        '200': 
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EventType'
+        '400':
+          description: Invalid input
+        '404':
+          description: Not found
+    delete:
+      tags: 
+        - event types
+      parameters:
+        - name: eventTypeId
+          in: path
+          description: ID of event type to delete
+          required: true
+          schema:
+            type: integer
+      responses: 
+        '204':
+          description: no content
+        '400':
+          description: invalid parameter
+        '404': 
+          description: not found
 components:
   schemas:
     ActionMessage: 
@@ -161,6 +256,13 @@ components:
           type: boolean
         isActive:
           type: boolean
+    EventType:
+      type: object
+      properties:
+        name: 
+          type: string
+        schema:
+          type: object
 
   requestBodies:
     Client:
@@ -175,5 +277,15 @@ components:
                 type: boolean
               isActive:
                 type: boolean
-      description: Client to be added
+      required: true
+    EventType:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name: 
+                type: string
+              schema:
+                type: object
       required: true
