@@ -1,0 +1,32 @@
+{
+  "name": "iot-simulator-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start_dev": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/polchky/IoT-simulator-backend.git"
+  },
+  "author": "Pascal Gremaud",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/polchky/IoT-simulator-backend/issues"
+  },
+  "homepage": "https://github.com/polchky/IoT-simulator-backend#readme",
+  "dependencies": {
+    "koa": "^2.11.0",
+    "koa-bodyparser": "^4.3.0",
+    "koa-router": "^8.0.8",
+    "mongoose": "^5.9.6"
+  },
+  "devDependencies": {
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.1.0",
+    "eslint-plugin-import": "^2.20.1",
+    "nodemon": "^2.0.2"
+  }
+}
