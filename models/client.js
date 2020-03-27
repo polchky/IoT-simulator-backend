@@ -10,6 +10,6 @@ const clientSchema = new Mongoose.Schema(
     { strict: 'throw' },
 );
 
-clientSchema.plugin(autoIncrement.plugin, 'Client');
+clientSchema.plugin(autoIncrement.plugin, { model: 'Client', startAt: 1 });
 
 module.exports = Mongoose.model('Client', clientSchema);

@@ -5,7 +5,6 @@ const fs = require('fs');
 
 const router = new Router();
 
-router.use(koaSwagger());
 
 router.get('/doc', koaSwagger({
     routePrefix: false,

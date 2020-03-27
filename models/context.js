@@ -8,6 +8,6 @@ const contextSchema = new Mongoose.Schema(
     { strict: 'throw' },
 );
 
-contextSchema.plugin(autoIncrement.plugin, 'Context');
+contextSchema.plugin(autoIncrement.plugin, { model: 'Context', startAt: 1 });
 
 module.exports = Mongoose.model('Context', contextSchema);
