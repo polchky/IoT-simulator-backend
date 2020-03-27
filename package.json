@@ -23,9 +23,11 @@
     "koa-bodyparser": "^4.3.0",
     "koa-combine-routers": "^4.0.2",
     "koa-router": "^8.0.8",
+    "koa2-swagger-ui": "^2.16.0",
     "module-alias": "^2.2.2",
     "mongoose": "^5.9.6",
-    "mongoose-auto-increment": "^5.0.1"
+    "mongoose-auto-increment": "^5.0.1",
+    "yamljs": "^0.3.0"
   },
   "devDependencies": {
     "dotenv": "^8.2.0",
