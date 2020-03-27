@@ -7,7 +7,6 @@ const param = (model) => async (id, ctx, next) => {
         ctx.throw(400);
     }
     if (!obj) ctx.throw(404);
-    obj.setLanguage(ctx.language);
     ctx[name] = obj.toJSON();
     return next();
 };

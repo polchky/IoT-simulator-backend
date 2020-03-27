@@ -1,4 +1,5 @@
 const Mongoose = require('mongoose');
+const autoIncrement = require('mongoose-auto-increment');
 
 Mongoose.plugin((schema) => {
     schema.options.toJSON = {
@@ -16,3 +17,5 @@ Mongoose.connect(process.env.MONGODB_URL, {
     useFindAndModify: false,
     useUnifiedTopology: true,
 });
+
+autoIncrement.initialize(Mongoose.connection);
