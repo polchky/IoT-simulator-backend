@@ -19,32 +19,105 @@ tags:
   - name: event types
   - name: rules
 paths:
-  /action-messages/:
-    get: 
-      tags:
-        - action-messages
+  /actiontemplates/:
+    get:
+      tags: 
+        - action templates
       responses:
-        '200': 
-          description: success
+        '200':
+          description: Success
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/ActionMessage'
-    post:
+                  $ref: '#/components/schemas/ActionTemplate'
+    post: 
       tags: 
-        - action-messages
-      responses: 
-        '201': 
+        - action templates
+      responses:
+        '201':
           description: created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActionTemplate'
+        '400':
+          description: Invalid input
+      requestBody:
+        $ref: '#/components/requestBodies/ActionTemplate'
+    delete:
+      tags: 
+        - action templates
+      responses: 
+        '204':
+          description: No content
+        '409':
+          description: Conflict with related resource
+  /actiontemplates/{actionTemplateId}:
+    get:
+      tags: 
+        - action templates
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActionTemplate'
+        '400':
+          description: Invalid parameter
+        '404': 
+          description: Not found
+      parameters:
+        - name: actionTemplateId
+          in: path
+          description: ID of action template to return
+          required: true
+          schema:
+            type: integer
+    put:
+      tags:
+        - action templates
+      responses:
+        '200': 
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActionTemplate'
+        '400':
+          description: Invalid input
+        '404':
+          description: Not found
+        '409':
+          description: Conflict with related resource
+    delete:
+      tags: 
+        - action templates
+      parameters:
+        - name: actionTemplateId
+          in: path
+          description: ID of action template to delete
+          required: true
+          schema:
+            type: integer
+      responses: 
+        '204':
+          description: No content
+        '400':
+          description: Invalid parameter
+        '404': 
+          description: Not found
+        '409':
+          description: Conflict with related resource
   /actiontypes/:
     get:
       tags: 
         - action types
       responses:
         '200':
-          description: success
+          description: Success
           content:
             application/json:
               schema:
@@ -62,7 +135,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ActionType'
         '400':
-          description: invalid input
+          description: Invalid input
       requestBody:
         $ref: '#/components/requestBodies/ActionType'
     delete:
@@ -70,22 +143,22 @@ paths:
         - action types
       responses: 
         '204':
-          description: no content
+          description: No content
   /actiontypes/{actionTypeId}:
     get:
       tags: 
         - action types
       responses:
         '200':
-          description: success
+          description: Success
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ActionType'
         '400':
-          description: invalid parameter
+          description: Invalid parameter
         '404': 
-          description: not found
+          description: Not found
       parameters:
         - name: actionTypeId
           in: path
@@ -107,7 +180,7 @@ paths:
         $ref: '#/components/requestBodies/ActionType'
       responses:
         '200': 
-          description: success
+          description: Success
           content:
             application/json:
               schema:
@@ -128,18 +201,18 @@ paths:
             type: integer
       responses: 
         '204':
-          description: no content
+          description: No content
         '400':
-          description: invalid parameter
+          description: Invalid parameter
         '404': 
-          description: not found
+          description: Not found
   /clients/:
     get:
       tags: 
         - clients
       responses:
         '200':
-          description: success
+          description: Success
           content:
             application/json:
               schema:
@@ -157,7 +230,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Client'
         '400':
-          description: invalid input
+          description: Invalid input
       requestBody:
         $ref: '#/components/requestBodies/Client'
     delete:
@@ -165,22 +238,22 @@ paths:
         - clients
       responses: 
         '204':
-          description: no content
+          description: No content
   /clients/{clientId}:
     get:
       tags: 
         - clients
       responses:
         '200':
-          description: success
+          description: Success
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Client'
         '400':
-          description: invalid parameter
+          description: Invalid parameter
         '404': 
-          description: not found
+          description: Not found
       parameters:
         - name: clientId
           in: path
@@ -202,7 +275,7 @@ paths:
         $ref: '#/components/requestBodies/Client'
       responses:
         '200': 
-          description: success
+          description: Success
           content:
             application/json:
               schema:
@@ -223,24 +296,100 @@ paths:
             type: integer
       responses: 
         '204':
-          description: no content
+          description: No content
         '400':
-          description: invalid parameter
+          description: Invalid parameter
         '404': 
-          description: not found
+          description: Not found
+  /events/:
+    get:
+      tags: 
+        - events
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Event'
+    post: 
+      tags: 
+        - events
+      responses:
+        '201':
+          description: created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Event'
+        '400':
+          description: Invalid input
+      requestBody:
+        $ref: '#/components/requestBodies/Event'
+    delete:
+      tags: 
+        - events
+      responses: 
+        '204':
+          description: No content
+        '409':
+          description: Conflict with related resource
+  /events/{eventId}:
+    get:
+      tags: 
+        - events
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Event'
+        '400':
+          description: Invalid parameter
+        '404': 
+          description: Not found
+      parameters:
+        - name: eventId
+          in: path
+          description: ID of event to return
+          required: true
+          schema:
+            type: integer
+    delete:
+      tags: 
+        - events
+      parameters:
+        - name: eventId
+          in: path
+          description: ID of event to delete
+          required: true
+          schema:
+            type: integer
+      responses: 
+        '204':
+          description: No content
+        '400':
+          description: Invalid parameter
+        '404': 
+          description: Not found
+        '409':
+          description: Conflict with related resource
   /eventtypes/:
     get:
       tags: 
         - event types
       responses:
         '200':
-          description: success
+          description: Success
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: ''#/components/schemas/EventType''
+                  $ref: '#/components/schemas/EventType'
     post: 
       tags: 
         - event types
@@ -252,7 +401,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/EventType'
         '400':
-          description: invalid input
+          description: Invalid input
       requestBody:
         $ref: '#/components/requestBodies/EventType'
     delete:
@@ -260,24 +409,24 @@ paths:
         - event types
       responses: 
         '204':
-          description: no content
+          description: No content
         '409':
-          description: conflict with related resource
+          description: Conflict with related resource
   /eventtypes/{eventTypeId}:
     get:
       tags: 
         - event types
       responses:
         '200':
-          description: success
+          description: Success
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/EventType'
         '400':
-          description: invalid parameter
+          description: Invalid parameter
         '404': 
-          description: not found
+          description: Not found
       parameters:
         - name: eventTypeId
           in: path
@@ -299,7 +448,7 @@ paths:
         $ref: '#/components/requestBodies/EventType'
       responses:
         '200': 
-          description: success
+          description: Success
           content:
             application/json:
               schema:
@@ -320,20 +469,20 @@ paths:
             type: integer
       responses: 
         '204':
-          description: no content
+          description: No content
         '400':
-          description: invalid parameter
+          description: Invalid parameter
         '404': 
-          description: not found
+          description: Not found
         '409':
-          description: conflict with related resource
+          description: Conflict with related resource
   /rules/:
     get:
       tags: 
         - rules
       responses:
         '200':
-          description: success
+          description: Success
           content:
             application/json:
               schema:
@@ -351,7 +500,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Rule'
         '400':
-          description: invalid input
+          description: Invalid input
       requestBody:
         $ref: '#/components/requestBodies/Rule'
     delete:
@@ -359,22 +508,22 @@ paths:
         - rules
       responses: 
         '204':
-          description: no content
+          description: No content
   /rules/{ruleId}:
     get:
       tags: 
         - rules
       responses:
         '200':
-          description: success
+          description: Success
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Rule'
         '400':
-          description: invalid parameter
+          description: Invalid parameter
         '404': 
-          description: not found
+          description: Not found
       parameters:
         - name: ruleId
           in: path
@@ -396,7 +545,7 @@ paths:
         $ref: '#/components/requestBodies/Rule'
       responses:
         '200': 
-          description: success
+          description: Success
           content:
             application/json:
               schema:
@@ -417,11 +566,11 @@ paths:
             type: integer
       responses: 
         '204':
-          description: no content
+          description: No content
         '400':
-          description: invalid parameter
+          description: Invalid parameter
         '404': 
-          description: not found
+          description: Not found
 components:
   schemas:
     ActionMessage: 
@@ -439,6 +588,26 @@ components:
           type: integer
         actionTemplateId:
           type: integer
+    ActionTemplate:
+      type: object
+      properties:
+        name: 
+          type: string
+        ruleId:
+          type: integer
+        actionTypeId: 
+          type: integer
+        clients:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+        function:
+          type: string
+        context:
+          type: string
     ActionType:
       type: object
       properties:
@@ -459,6 +628,19 @@ components:
           type: boolean
         isActive:
           type: boolean
+    Event:
+      type: object
+      properties:
+        id: 
+          type: integer
+        clientId: 
+          type: integer
+        eventTypeId:
+          type: integer
+        properties:
+          type: object
+        timestamp:
+          type: string
     EventType:
       type: object
       properties:
@@ -485,6 +667,30 @@ components:
           type: object
 
   requestBodies:
+    ActionTemplate:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name: 
+                type: string
+              ruleId:
+                type: integer
+              actionTypeId: 
+                type: integer
+              clients:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+              function:
+                type: string
+              context:
+                type: string
+      required: true
     ActionType:
       content:
         application/json:
@@ -508,6 +714,21 @@ components:
                 type: boolean
               isActive:
                 type: boolean
+      required: true
+    Event:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              clientId: 
+                type: integer
+              eventTypeId:
+                type: integer
+              properties:
+                type: object
+              timestamp:
+                type: string
       required: true
     EventType:
       content:
