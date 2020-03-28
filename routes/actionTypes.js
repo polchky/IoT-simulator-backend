@@ -17,8 +17,7 @@ router
     .param('actionTypeId', param(ActionType))
 
     .get('/', async (ctx) => {
-        const eventTypes = await ActionType.find();
-        ctx.body = eventTypes;
+        ctx.body = await ActionType.find();
     })
 
     .get('/:actionTypeId', (ctx) => {

@@ -38,6 +38,101 @@ paths:
       responses: 
         '201': 
           description: created
+  /actiontypes/:
+    get:
+      tags: 
+        - action types
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: ''#/components/schemas/ActionType''
+    post: 
+      tags: 
+        - action types
+      responses:
+        '201':
+          description: created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActionType'
+        '400':
+          description: invalid input
+      requestBody:
+        $ref: '#/components/requestBodies/ActionType'
+    delete:
+      tags: 
+        - action types
+      responses: 
+        '204':
+          description: no content
+  /actiontypes/{actionTypeId}:
+    get:
+      tags: 
+        - action types
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActionType'
+        '400':
+          description: invalid parameter
+        '404': 
+          description: not found
+      parameters:
+        - name: actionTypeId
+          in: path
+          description: ID of action type to return
+          required: true
+          schema:
+            type: integer
+    put:
+      tags: 
+        - action types
+      parameters:
+        - name: actionTypeId
+          in: path
+          description: ID of action type to update
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        $ref: '#/components/requestBodies/ActionType'
+      responses:
+        '200': 
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActionType'
+        '400':
+          description: Invalid input
+        '404':
+          description: Not found
+    delete:
+      tags: 
+        - action types
+      parameters:
+        - name: actionTypeId
+          in: path
+          description: ID of action type to delete
+          required: true
+          schema:
+            type: integer
+      responses: 
+        '204':
+          description: no content
+        '400':
+          description: invalid parameter
+        '404': 
+          description: not found
   /clients/:
     get:
       tags: 
@@ -166,6 +261,8 @@ paths:
       responses: 
         '204':
           description: no content
+        '409':
+          description: conflict with related resource
   /eventtypes/{eventTypeId}:
     get:
       tags: 
@@ -228,6 +325,103 @@ paths:
           description: invalid parameter
         '404': 
           description: not found
+        '409':
+          description: conflict with related resource
+  /rules/:
+    get:
+      tags: 
+        - rules
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Rule'
+    post: 
+      tags: 
+        - rules
+      responses:
+        '201':
+          description: created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Rule'
+        '400':
+          description: invalid input
+      requestBody:
+        $ref: '#/components/requestBodies/Rule'
+    delete:
+      tags: 
+        - rules
+      responses: 
+        '204':
+          description: no content
+  /rules/{ruleId}:
+    get:
+      tags: 
+        - rules
+      responses:
+        '200':
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Rule'
+        '400':
+          description: invalid parameter
+        '404': 
+          description: not found
+      parameters:
+        - name: ruleId
+          in: path
+          description: ID of rule to return
+          required: true
+          schema:
+            type: integer
+    put:
+      tags: 
+        - rules
+      parameters:
+        - name: ruleId
+          in: path
+          description: ID of rule to update
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        $ref: '#/components/requestBodies/Rule'
+      responses:
+        '200': 
+          description: success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Rule'
+        '400':
+          description: Invalid input
+        '404':
+          description: Not found
+    delete:
+      tags: 
+        - rules
+      parameters:
+        - name: ruleId
+          in: path
+          description: ID of rule to delete
+          required: true
+          schema:
+            type: integer
+      responses: 
+        '204':
+          description: no content
+        '400':
+          description: invalid parameter
+        '404': 
+          description: not found
 components:
   schemas:
     ActionMessage: 
@@ -245,6 +439,15 @@ components:
           type: integer
         actionTemplateId:
           type: integer
+    ActionType:
+      type: object
+      properties:
+        id:
+          type: integer
+        name: 
+          type: string
+        schema:
+          type: object
     Client: 
       type: object
       properties:
@@ -259,12 +462,40 @@ components:
     EventType:
       type: object
       properties:
+        id: 
+          type: integer
         name: 
           type: string
         schema:
           type: object
+    Rule:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        eventTypeId:
+          type: integer
+        function:
+          type: string
+        isActive:
+          type: boolean
+        context:
+          type: object
 
   requestBodies:
+    ActionType:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name: 
+                type: string
+              schema:
+                type: object
+      required: true
     Client:
       content:
         application/json:
@@ -289,3 +520,19 @@ components:
               schema:
                 type: object
       required: true
+    Rule:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+              eventTypeId:
+                type: integer
+              function:
+                type: string
+              isActive:
+                type: boolean
+              context:
+                type: object

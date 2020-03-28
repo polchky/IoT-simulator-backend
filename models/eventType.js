@@ -6,7 +6,7 @@ const eventTypeSchema = new Mongoose.Schema(
         name: { type: String, required: true },
         structure: { type: JSON, required: true },
     },
-    { strict: 'throw' },
+    { strict: 'throw', minimize: false },
 );
 
 eventTypeSchema.plugin(autoIncrement.plugin, { model: 'EventType', startAt: 1 });

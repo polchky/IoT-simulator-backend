@@ -1,5 +1,5 @@
 const Router = require('koa-router');
-const { EventType } = require('@models');
+const { EventType, Rule } = require('@models');
 const { param } = require('@middlewares');
 
 const router = new Router({
@@ -17,8 +17,7 @@ router
     .param('eventTypeId', param(EventType))
 
     .get('/', async (ctx) => {
-        const eventTypes = await EventType.find();
-        ctx.body = eventTypes;
+        ctx.body = await EventType.find();
     })
 
     .get('/:eventTypeId', (ctx) => {
@@ -52,11 +51,15 @@ router
     })
 
     .delete('/', async (ctx) => {
+        const rules = await Rule.countDocuments({});
+        if (rules > 0) ctx.throw(409);
         await EventType.deleteMany({});
         ctx.status = 204;
     })
 
     .delete('/:eventTypeId', async (ctx) => {
+        const rules = await Rule.countDocuments({ eventTypeId: ctx.eventType.id });
+        if (rules > 0) ctx.throw(409);
         await EventType.deleteOne({ _id: ctx.eventType.id });
         ctx.status = 204;
     });

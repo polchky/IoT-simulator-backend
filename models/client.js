@@ -7,7 +7,7 @@ const clientSchema = new Mongoose.Schema(
         isAdmin: { type: Boolean, required: true },
         isActive: { type: Boolean, required: true },
     },
-    { strict: 'throw' },
+    { strict: 'throw', minimize: false },
 );
 
 clientSchema.plugin(autoIncrement.plugin, { model: 'Client', startAt: 1 });

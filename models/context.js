@@ -5,7 +5,7 @@ const contextSchema = new Mongoose.Schema(
     {
         value: { type: String, required: true },
     },
-    { strict: 'throw' },
+    { strict: 'throw', minimize: false },
 );
 
 contextSchema.plugin(autoIncrement.plugin, { model: 'Context', startAt: 1 });

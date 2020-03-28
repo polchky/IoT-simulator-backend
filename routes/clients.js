@@ -10,8 +10,7 @@ router
     .param('clientId', param(Client))
 
     .get('/', async (ctx) => {
-        const clients = await Client.find();
-        ctx.body = clients;
+        ctx.body = await Client.find();
     })
 
     .get('/:clientId', (ctx) => {
