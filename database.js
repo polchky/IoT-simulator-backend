@@ -2,6 +2,7 @@ const Mongoose = require('mongoose');
 const autoIncrement = require('mongoose-auto-increment');
 
 Mongoose.plugin((schema) => {
+
     schema.options.toJSON = {
         versionKey: false,
         transform(doc, ret) {
@@ -14,12 +15,6 @@ Mongoose.plugin((schema) => {
         },
     };
 
-    schema.pre('validate', async function validate() {
-        if (this.schema !== undefined) {
-            this.sctructure = this.schema;
-            delete this.schema;
-        }
-    });
 });
 
 Mongoose.connect(process.env.MONGODB_URL, {

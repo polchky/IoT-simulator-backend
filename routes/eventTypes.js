@@ -6,6 +6,13 @@ const router = new Router({
     prefix: '/eventtypes',
 });
 
+const transform = (body) => {
+    const ret = body;
+    ret.structure = ret.schema;
+    delete ret.schema;
+    return ret;
+};
+
 router
     .param('eventTypeId', param(EventType))
 
@@ -20,9 +27,8 @@ router
 
     .post('/', async (ctx) => {
         try {
-            ctx.request.body.structure = ctx.request.body.schema;
-            delete ctx.request.body.schema;
-            const eventType = new EventType(ctx.request.body);
+            const body = transform(ctx.request.body);
+            const eventType = new EventType(body);
             await eventType.save();
             ctx.body = eventType;
             ctx.status = 201;
@@ -33,11 +39,10 @@ router
 
     .put('/:eventTypeId', async (ctx) => {
         try {
-            ctx.request.body.structure = ctx.request.body.schema;
-            delete ctx.request.body.schema;
+            const body = transform(ctx.request.body);
             ctx.body = await EventType.findByIdAndUpdate(
                 ctx.eventType.id,
-                ctx.request.body,
+                body,
                 { new: true },
             );
             ctx.status = 200;
