@@ -9,14 +9,6 @@ const eventTypeSchema = new Mongoose.Schema(
     { strict: 'throw' },
 );
 
-eventTypeSchema.plugin((schema) => {
-    schema.options.toJSON = {
-        transform(doc, ret) {
-            ret.schema = ret.structure;
-        },
-    };
-});
-
 eventTypeSchema.plugin(autoIncrement.plugin, { model: 'EventType', startAt: 1 });
 
 module.exports = Mongoose.model('EventType', eventTypeSchema);
