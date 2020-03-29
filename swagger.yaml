@@ -7,7 +7,7 @@ info:
     email: pascal.gremaud@unifr.ch
 servers:
   - description: Live server instance 
-    url: https://iot-simulator.decensor.yt
+    url: http://iot-simulator.decensor.yt
   - description: Localhost server
     url: http://localhost:3000
 tags:
