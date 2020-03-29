@@ -1,13 +1,16 @@
-const notExists = (model) => async (ctx, next) => {
-    let obj;
-    const name = `${model.modelName.charAt(0).toLowerCase()}${model.modelName.slice(1)}Id`;
-    if (ctx.request.body[name] === undefined) ctx.throw(400);
-    try {
-        obj = await model.findById(ctx.request.body[name]);
-    } catch (err) {
-        ctx.throw(400);
+const notExists = (model) => (referencedModel, all = false) => async (ctx, next) => {
+    if (all) {
+        const nDocs = await referencedModel.countDocuments({});
+        if (nDocs > 0) ctx.throw(409);
+        return next();
     }
-    if (obj !== null) ctx.throw(409);
+    const name = model.modelName.charAt(0).toLowerCase() + model.modelName.slice(1);
+    const nameId = `${name}Id`;
+    const req = {};
+    req[nameId] = ctx[name].id;
+    const nDocs = await referencedModel.countDocuments(req);
+    if (nDocs > 0) ctx.throw(409);
+
     return next();
 };
 
