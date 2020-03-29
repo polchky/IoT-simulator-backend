@@ -1,6 +1,8 @@
 const Router = require('koa-router');
-const { ActionType } = require('@models');
-const { param } = require('@middlewares');
+const { ActionTemplate, ActionType } = require('@models');
+const { NotExists, param } = require('@middlewares');
+
+const notExists = NotExists(ActionType);
 
 const router = new Router({
     prefix: '/actiontypes',
@@ -50,12 +52,12 @@ router
         }
     })
 
-    .delete('/', async (ctx) => {
+    .delete('/', notExists(ActionTemplate, true), async (ctx) => {
         await ActionType.deleteMany({});
         ctx.status = 204;
     })
 
-    .delete('/:actionTypeId', async (ctx) => {
+    .delete('/:actionTypeId', notExists(ActionTemplate), async (ctx) => {
         await ActionType.deleteOne({ _id: ctx.actionType.id });
         ctx.status = 204;
     });

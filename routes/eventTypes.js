@@ -1,6 +1,8 @@
 const Router = require('koa-router');
-const { EventType, Rule } = require('@models');
-const { param } = require('@middlewares');
+const { Event, EventType, Rule } = require('@models');
+const { param, NotExists } = require('@middlewares');
+
+const notExists = NotExists(EventType);
 
 const router = new Router({
     prefix: '/eventtypes',
@@ -50,16 +52,12 @@ router
         }
     })
 
-    .delete('/', async (ctx) => {
-        const rules = await Rule.countDocuments({});
-        if (rules > 0) ctx.throw(409);
+    .delete('/', notExists(Event, true), notExists(Rule, true), async (ctx) => {
         await EventType.deleteMany({});
         ctx.status = 204;
     })
 
-    .delete('/:eventTypeId', async (ctx) => {
-        const rules = await Rule.countDocuments({ eventTypeId: ctx.eventType.id });
-        if (rules > 0) ctx.throw(409);
+    .delete('/:eventTypeId', notExists(Event), notExists(Rule), async (ctx) => {
         await EventType.deleteOne({ _id: ctx.eventType.id });
         ctx.status = 204;
     });

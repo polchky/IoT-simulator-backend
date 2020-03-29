@@ -1,11 +1,14 @@
 const Router = require('koa-router');
 const {
+    ActionMessage,
     ActionTemplate,
     ActionType,
     Client,
     Rule,
 } = require('@models');
-const { param } = require('@middlewares');
+const { exists, NotExists, param } = require('@middlewares');
+
+const notExists = NotExists(ActionTemplate);
 
 const router = new Router({
     prefix: '/actiontemplates',
@@ -22,19 +25,13 @@ router
         ctx.body = ctx.actionTemplate;
     })
 
-    .post('/', async (ctx) => {
+    .post('/', exists(ActionType), exists(Rule), async (ctx) => {
         try {
-            const rule = await Rule.findById(ctx.request.body.ruleId);
-            const actionType = await ActionType.findById(ctx.request.body.actionTypeId);
             ctx.request.body.clients = ctx.request.body.clients.map((c) => ({ _id: c.id }));
             const clients = await Client.find(
                 { _id: { $in: ctx.request.body.clients.map((c) => c._id) } },
             );
-            if (
-                rule === null
-                || actionType === null
-                || clients.length < ctx.request.body.clients.length
-            ) {
+            if (clients.length < ctx.request.body.clients.length) {
                 ctx.status = 409;
                 return;
             }
@@ -48,19 +45,13 @@ router
         }
     })
 
-    .put('/:actionTemplateId', async (ctx) => {
+    .put('/:actionTemplateId', exists(ActionType), exists(Rule), async (ctx) => {
         try {
-            const rule = await Rule.findById(ctx.request.body.ruleId);
-            const actionType = await ActionType.findById(ctx.request.body.actionTypeId);
             ctx.request.body.clients = ctx.request.body.clients.map((c) => ({ _id: c.id }));
             const clients = await Client.find(
                 { _id: { $in: ctx.request.body.clients.map((c) => c._id) } },
             );
-            if (
-                rule === null
-                || actionType === null
-                || clients.length < ctx.request.body.clients.length
-            ) {
+            if (clients.length < ctx.request.body.clients.length) {
                 ctx.status = 409;
                 return;
             }
@@ -76,12 +67,12 @@ router
         }
     })
 
-    .delete('/', async (ctx) => {
+    .delete('/', notExists(ActionMessage, true), async (ctx) => {
         await ActionTemplate.deleteMany({});
         ctx.status = 204;
     })
 
-    .delete('/:actionTemplateId', async (ctx) => {
+    .delete('/:actionTemplateId', notExists(ActionMessage), async (ctx) => {
         await ActionTemplate.deleteOne({ _id: ctx.actionTemplate.id });
         ctx.status = 204;
     });

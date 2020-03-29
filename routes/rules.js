@@ -1,6 +1,13 @@
 const Router = require('koa-router');
-const { EventType, Rule } = require('@models');
-const { param } = require('@middlewares');
+const {
+    ActionMessage,
+    ActionTemplate,
+    EventType,
+    Rule,
+} = require('@models');
+const { exists, param, NotExists } = require('@middlewares');
+
+const notExists = NotExists(Rule);
 
 const router = new Router({
     prefix: '/rules',
@@ -18,13 +25,8 @@ router
         ctx.body = ctx.rule;
     })
 
-    .post('/', async (ctx) => {
+    .post('/', exists(EventType), async (ctx) => {
         try {
-            const eventType = await EventType.findById(ctx.request.body.eventTypeId);
-            if (eventType === null) {
-                ctx.status = 409;
-                return;
-            }
             const rule = new Rule(ctx.request.body);
             await rule.save();
             ctx.body = rule;
@@ -34,13 +36,8 @@ router
         }
     })
 
-    .put('/:ruleId', async (ctx) => {
+    .put('/:ruleId', exists(EventType), async (ctx) => {
         try {
-            const eventType = await EventType.findById(ctx.request.body.eventTypeId);
-            if (eventType === null) {
-                ctx.status = 409;
-                return;
-            }
             ctx.body = await Rule.findByIdAndUpdate(
                 ctx.rule.id,
                 ctx.request.body,
@@ -52,12 +49,12 @@ router
         }
     })
 
-    .delete('/', async (ctx) => {
+    .delete('/', notExists(ActionTemplate, true), notExists(ActionMessage, true), async (ctx) => {
         await Rule.deleteMany({});
         ctx.status = 204;
     })
 
-    .delete('/:ruleId', async (ctx) => {
+    .delete('/:ruleId', notExists(ActionTemplate), notExists(ActionMessage), async (ctx) => {
         await Rule.deleteOne({ _id: ctx.rule.id });
         ctx.status = 204;
     });
