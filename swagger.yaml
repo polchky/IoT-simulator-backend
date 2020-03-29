@@ -11,7 +11,7 @@ servers:
   - description: Localhost server
     url: http://localhost:3000
 tags:
-  - name: action messages
+  - name: actions
   - name: action templates
   - name: action types
   - name: clients
@@ -19,6 +19,55 @@ tags:
   - name: event types
   - name: rules
 paths:
+  /clients/{clientId}/actions/:
+    get:
+      tags:
+        - actions
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Action'
+        '404':
+          description: Not found
+      parameters:
+        - name: clientId
+          in: path
+          description: ID of client to which the actions belong
+          required: true
+          schema:
+            type: integer
+  /clients/{clientId}/actions/{actionId}:
+    get:
+      tags:
+        - actions
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Action'
+        '404':
+          description: Not found
+      parameters:
+        - name: clientId
+          in: path
+          description: ID of client to which the actions belong
+          required: true
+          schema:
+            type: integer 
+        - name: actionId
+          in: path
+          description: ID of action to retrieve
+          required: true
+          schema:
+            type: integer 
+        
   /actiontemplates/:
     get:
       tags: 
@@ -77,8 +126,17 @@ paths:
           schema:
             type: integer
     put:
-      tags:
+      tags: 
         - action templates
+      parameters:
+        - name: actionTemplateId
+          in: path
+          description: ID of action template to update
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        $ref: '#/components/requestBodies/ActionTemplate'
       responses:
         '200': 
           description: Success
@@ -573,7 +631,7 @@ paths:
           description: Not found
 components:
   schemas:
-    ActionMessage: 
+    Action: 
       type: object
       properties:
         id:
