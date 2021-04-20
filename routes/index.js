@@ -7,6 +7,7 @@ const clients = require('@routes/clients');
 const events = require('@routes/events');
 const eventTypes = require('@routes/eventTypes');
 const rules = require('@routes/rules');
+const scenarios = require('@routes/scenarios');
 const swagger = require('@routes/swagger');
 
 const router = CombineRouters([
@@ -17,6 +18,7 @@ const router = CombineRouters([
     events,
     eventTypes,
     rules,
+    scenarios,
     swagger,
 ]);
 

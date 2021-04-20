@@ -6,6 +6,7 @@ const Context = require('@models/context');
 const Event = require('@models/event');
 const EventType = require('@models/eventType');
 const Rule = require('@models/rule');
+const Scenario = require('@models/scenario');
 
 const models = {
     ActionMessage,
@@ -16,6 +17,7 @@ const models = {
     Event,
     EventType,
     Rule,
+    Scenario,
 };
 
 module.exports = models;
