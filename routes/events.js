@@ -1,9 +1,14 @@
+/* eslint-disable no-new-func */
+/* eslint-disable no-restricted-globals */
+
 const Router = require('koa-router');
 const {
     ActionMessage,
     Client,
+    Context,
     Event,
     EventType,
+    Rule,
 } = require('@models');
 const { exists, NotExists, param } = require('@middlewares');
 
@@ -25,13 +30,34 @@ router
     })
 
     .post('/', exists(Client), exists(EventType), async (ctx) => {
+        // Save event
+        let event;
         try {
-            const event = new Event(ctx.request.body);
+            event = new Event(ctx.request.body);
             await event.save();
             ctx.body = event;
             ctx.status = 201;
         } catch (err) {
             ctx.status = 400;
+            return;
+        }
+        // Evaluate rules
+        try {
+            let globalContext = await Context.findOne({});
+            if (globalContext === null) globalContext = {};
+            const rules = await Rule.find({ eventTypeId: event.eventTypeId });
+            for (let i = 0; i < rules.length; i += 1) {
+                this.context = { local: rules[i].context, global: globalContext };
+                const fun = new Function('event', `context = this.context; ${rules[i].function}`);
+                console.log(rules[i].function);
+                console.log(event.properties);
+                const ret = fun.apply(this, [event.properties]);
+                console.log(context);
+                console.log(ret);
+            }
+        } catch (err) {
+            console.log(err);
+            ctx.status = 500;
         }
     })
 

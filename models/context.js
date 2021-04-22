@@ -3,7 +3,7 @@ const autoIncrement = require('mongoose-auto-increment');
 
 const contextSchema = new Mongoose.Schema(
     {
-        value: { type: String, required: true },
+        value: { type: JSON, required: true },
     },
     { strict: 'throw', minimize: false },
 );
