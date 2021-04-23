@@ -761,7 +761,7 @@ components:
         function:
           type: string
         context:
-          type: string
+          type: object
     ActionType:
       type: object
       properties:
@@ -849,7 +849,7 @@ components:
               function:
                 type: string
               context:
-                type: string
+                type: object
       required: true
     ActionType:
       content:

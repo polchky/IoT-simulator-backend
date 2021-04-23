@@ -4,6 +4,7 @@
 const Router = require('koa-router');
 const {
     ActionMessage,
+    ActionTemplate,
     Client,
     Context,
     Event,
@@ -47,14 +48,36 @@ router
             if (globalContext === null) globalContext = {};
             const rules = await Rule.find({ eventTypeId: event.eventTypeId });
             for (let i = 0; i < rules.length; i += 1) {
-                this.context = { local: rules[i].context, global: globalContext };
-                const fun = new Function('event', `context = this.context; ${rules[i].function}`);
-                console.log(rules[i].function);
-                console.log(event.properties);
+
+                const rule = rules[i];
+                this.context = { local: rule.context, global: globalContext };
+                const fun = new Function('event', `context = this.context; ${rule.function}`);
                 const ret = fun.apply(this, [event.properties]);
-                console.log(context);
-                console.log(ret);
+                await Rule.updateOne({ _id: rule._id }, { context: rule.context });
+                // Create messages
+                if (ret) {
+                    const actionTemplates = await ActionTemplate.find({ ruleId: rule._id });
+                    for (let j = 0; j < actionTemplates.length; j += 1) {
+                        const actionTemplate = actionTemplates[j];
+                        this.context = { local: actionTemplate.context, global: globalContext };
+                        const fun = new Function('event', `context = this.context; ${actionTemplate.function}`);
+                        const message = fun.apply(this, [event.properties]);
+                        await ActionTemplate.updateOne({ _id: actionTemplate._id }, { context: actionTemplate.context });
+                        const actionMessage = new ActionMessage({
+                            message,
+                            timestamp: new Date().toISOString(),
+                            eventId: event._id,
+                            ruleId: rule._id,
+                            actionTemplateId: actionTemplate._id,
+                            clients: actionTemplate.clients,
+                        });
+                        await actionMessage.save();
+                    }
+                }
             }
+
+            await Context.updateOne({}, { value: globalContext });
+            ctx.status = 204;
         } catch (err) {
             console.log(err);
             ctx.status = 500;

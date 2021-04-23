@@ -17,6 +17,6 @@ const actionTemplateSchema = new Mongoose.Schema(
     { strict: 'throw', minimize: false },
 );
 
-actionTemplateSchema.plugin(autoIncrement.plugin, 'ActionTemplate');
+actionTemplateSchema.plugin(autoIncrement.plugin, { model: 'ActionTemplate', startAt: 1 });
 
 module.exports = Mongoose.model('ActionTemplate', actionTemplateSchema);
