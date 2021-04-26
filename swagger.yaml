@@ -20,6 +20,13 @@ tags:
   - name: rules
   - name: scenarios
 paths:
+  /actions/:
+    delete:
+      tags:
+        - actions
+      responses:
+        '204':
+          description: No content
   /clients/{clientId}/actions/:
     get:
       tags:
