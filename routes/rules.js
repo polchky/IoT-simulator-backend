@@ -49,12 +49,12 @@ router
         }
     })
 
-    .delete('/', notExists(ActionTemplate, true), notExists(ActionMessage, true), async (ctx) => {
+    .delete('/', notExists(ActionTemplate, true), async (ctx) => {
         await Rule.deleteMany({});
         ctx.status = 204;
     })
 
-    .delete('/:ruleId', notExists(ActionTemplate), notExists(ActionMessage), async (ctx) => {
+    .delete('/:ruleId', notExists(ActionTemplate), async (ctx) => {
         await Rule.deleteOne({ _id: ctx.rule.id });
         ctx.status = 204;
     });

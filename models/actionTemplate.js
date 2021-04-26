@@ -8,8 +8,8 @@ const clientIdSchema = new Mongoose.Schema({
 const actionTemplateSchema = new Mongoose.Schema(
     {
         name: { type: String, required: true },
-        ruleId: { type: Number, ref: 'Rule', required: true },
-        actionTypeId: { type: Number, ref: 'ActionType', required: true },
+        ruleId: { type: Number, required: true },
+        actionTypeId: { type: Number, required: true },
         function: { type: String, required: true },
         context: { type: JSON, required: true },
         clients: [clientIdSchema],

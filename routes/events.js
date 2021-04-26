@@ -84,12 +84,12 @@ router
         }
     })
 
-    .delete('/', notExists(ActionMessage, true), async (ctx) => {
+    .delete('/', async (ctx) => {
         await Event.deleteMany({});
         ctx.status = 204;
     })
 
-    .delete('/:eventId', notExists(ActionMessage), async (ctx) => {
+    .delete('/:eventId', async (ctx) => {
         await Event.deleteOne({ _id: ctx.event.id });
         ctx.status = 204;
     });

@@ -9,9 +9,9 @@ const actionMessageSchema = new Mongoose.Schema(
     {
         message: { type: JSON, required: true },
         timestamp: { type: String, required: true },
-        eventId: { type: Number, ref: 'Event', required: true },
-        ruleId: { type: Number, ref: 'Rule', required: true },
-        actionTemplateId: { type: Number, ref: 'ActionTemplate', required: true },
+        eventId: { type: Number, required: true },
+        ruleId: { type: Number, required: true },
+        actionTemplateId: { type: Number, required: true },
         clients: [clientIdSchema],
     },
     { strict: 'throw', minimize: false },

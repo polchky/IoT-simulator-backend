@@ -67,12 +67,12 @@ router
         }
     })
 
-    .delete('/', notExists(ActionMessage, true), async (ctx) => {
+    .delete('/', async (ctx) => {
         await ActionTemplate.deleteMany({});
         ctx.status = 204;
     })
 
-    .delete('/:actionTemplateId', notExists(ActionMessage), async (ctx) => {
+    .delete('/:actionTemplateId', async (ctx) => {
         await ActionTemplate.deleteOne({ _id: ctx.actionTemplate.id });
         ctx.status = 204;
     });

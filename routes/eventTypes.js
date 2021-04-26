@@ -52,12 +52,12 @@ router
         }
     })
 
-    .delete('/', notExists(Event, true), notExists(Rule, true), async (ctx) => {
+    .delete('/', notExists(Rule, true), async (ctx) => {
         await EventType.deleteMany({});
         ctx.status = 204;
     })
 
-    .delete('/:eventTypeId', notExists(Event), notExists(Rule), async (ctx) => {
+    .delete('/:eventTypeId', notExists(Rule), async (ctx) => {
         await EventType.deleteOne({ _id: ctx.eventType.id });
         ctx.status = 204;
     });

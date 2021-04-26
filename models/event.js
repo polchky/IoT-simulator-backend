@@ -3,8 +3,8 @@ const autoIncrement = require('mongoose-auto-increment');
 
 const eventSchema = new Mongoose.Schema(
     {
-        clientId: { type: Number, ref: 'Client', required: true },
-        eventTypeId: { type: Number, ref: 'EventType', required: true },
+        clientId: { type: Number, required: true },
+        eventTypeId: { type: Number, required: true },
         properties: { type: JSON, required: true },
         timestamp: { type: Date, required: true },
     },

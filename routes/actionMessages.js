@@ -15,7 +15,6 @@ router
         ctx.body = actionMessages;
     })
 
-
     .get('/:actionId', async (ctx) => {
         try {
             console.log(ctx.actionMessage);
